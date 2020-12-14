@@ -16,13 +16,13 @@ spec:
     spec:
       containers:
       - name: github-runner
-        image: sanderknape/github-runner:latest
+        image: jduimovich/github-runner:latest
         env:
         - name: GITHUB_OWNER
-          value: your-organization
+          value: jduimovich
         - name: GITHUB_REPOSITORY
-          value: your-repository
-        - name: GITHUB_PAT # stored separately in a Kubernetes secret
+          value: https://github.com/jduimovich/graphtuitous
+        - name: GITHUB_PAT  
           valueFrom:
             secretKeyRef:
               name: my-secret

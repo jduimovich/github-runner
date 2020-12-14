@@ -15,6 +15,7 @@ RUN apt-get update \
         sudo \
         git \
         jq \
+        buildah \
         iputils-ping \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
@@ -25,10 +26,11 @@ RUN apt-get update \
 USER github
 WORKDIR /home/github
 
-RUN curl -Ls https://github.com/actions/runner/releases/download/v${GITHUB_RUNNER_VERSION}/actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz | tar xz \
+RUN curl -Ls https://github.com/actions/runner/releases/download/v${GITHUB_RUNNER_VERSION}/actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz | tar xvz \
     && sudo ./bin/installdependencies.sh
 
 COPY --chown=github:github entrypoint.sh ./entrypoint.sh
 RUN sudo chmod u+x ./entrypoint.sh
+RUN sed -i 's/\r//g' entrypoint.sh
 
-ENTRYPOINT ["/home/github/entrypoint.sh"]
+CMD [ "/bin/sh", "/home/github/entrypoint.sh"  ] 
